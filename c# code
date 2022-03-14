@@ -1,0 +1,119 @@
+using System;
+using System.Collections.Generic;
+
+namespace Peppies
+{
+    public class Riddle
+    {
+        public String riddletxt { get; set; }
+        public String riddleanswer { get; set; }
+    }
+    public class PeppiesMachine
+    {
+        public static void Main(String[] args)
+        {
+            List<Riddle> listofRiddles = new List<Riddle>();
+            bool exit = false;
+            do
+            {
+                switch (WhatDo())
+                {
+                    case 1:
+                        listofRiddles.Add(InputRiddle());
+                        break;
+                    case 2:
+                        if (listofRiddles.Count == 0)
+                        {
+                            Console.WriteLine("You have no riddles.");
+                        }
+                        else
+                        {
+                            AnswerRiddles(listofRiddles);
+                        }
+                        break;
+                    case 3:
+                        exit = true;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid entry.");
+                        break;
+                }
+            }
+            while (!exit);
+        }
+
+        private static void TestResponse()
+        {
+            Console.WriteLine(" test throw variabele");
+        }
+
+        private static int WhatDo()
+        {
+            Console.WriteLine("What do you want to do?");
+            Console.WriteLine("1. Enter a riddle \n2. Answer riddles \n3. Exit program");
+            int input = Int32.Parse(Console.ReadLine());
+            return input;
+        }
+
+        private static Riddle InputRiddle()
+        {
+
+            Console.WriteLine("What is your riddle?");
+            String question = Console.ReadLine();
+
+            Console.WriteLine("What is the answer to this riddle?");
+            String answer = Console.ReadLine();
+
+            return CreateRiddle(question, answer);
+        }
+
+        static public Riddle CreateRiddle(String x, String y)
+        {
+            Riddle riddle = new Riddle();
+            riddle.riddleanswer = y;
+            riddle.riddletxt = x;
+            return riddle;
+        }
+
+        static public void AnswerRiddles(List<Riddle> listofRiddles)
+        {
+            String userinput;
+            foreach (Riddle riddle in listofRiddles)
+            {
+                String exit = "";
+                do
+                {
+                    Console.WriteLine(riddle.riddletxt);
+                    userinput = Console.ReadLine();
+
+                    if (riddle.riddleanswer == userinput)
+                    {
+                        Console.WriteLine("Correct");
+                    }
+                    else
+                    {
+
+                        Console.WriteLine("Wrong answer. Would you like to continue? Yes or No?");
+                        exit = Console.ReadLine();
+                        bool validEntry = false;
+                        do
+                        {
+                            switch (exit)
+                            {
+                                case "Yes":
+                                    validEntry = true;
+                                    break;
+                                case "No":
+                                    validEntry = true;
+                                    break;
+                                default:
+                                    Console.WriteLine("Please enter Yes or No");
+                                    break;
+                            }
+                        } while (!validEntry);
+                    }
+                } while (riddle.riddleanswer != userinput && exit == "Yes");
+            }
+        }
+    }
+}
